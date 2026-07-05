@@ -1,5 +1,7 @@
-from kiro.cli import app
+from kiro.cli import run_cli
 
-# main function that is executed when the program is run
+def main():
+    run_cli()
+
 if __name__ == "__main__":
-    app()
+    main()
