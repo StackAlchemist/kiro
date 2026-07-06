@@ -14,6 +14,7 @@ Instead of manually setting up folders, dependencies, and boilerplate, Kiro guid
 - Project name prompt
 - Automatic folder generation
 - Basic starter files setup
+- file config for node js(ts/js) and python
 
 ---
 

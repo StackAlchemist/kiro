@@ -1,35 +1,48 @@
 # Creates files/folders
 import os
 from pathlib import Path
+import shutil
+from kiro.utils.files import replace_placeholders
+from kiro.ui import show_success
+from kiro.installers import install_dependencies
+
+
 
 def create_project(state):
     base_path = Path(state.project_name)
     base_path.mkdir(exist_ok=True)
 
-    # create project folder
+    template_path = get_template_path(state)
 
-    (base_path / "src").mkdir(exist_ok=True)
-    (base_path / "src" / "routes").mkdir(parents=True, exist_ok=True)
+    if template_path and template_path.exists():
+        shutil.copytree(
+            template_path,
+            base_path,
+            dirs_exist_ok=True
+        )
+
+        replace_placeholders(base_path, state)
+
+    show_success(state)
+
+
+
+def get_template_path(state):
+    base = Path("kiro") / "templates"
 
     if state.runtime == "Node.js":
-        main_file = base_path / "src" / "index.js"
-        main_file.write_text(
-             """console.log("Kiro project running 🚀")"""
-        )
+        framework = state.framework.lower()
 
-    elif state.runtime == "Python":
-        main_file = base_path / "src" / "main.py"
-        main_file.write_text(
-            """print("Kiro project running 🚀")"""
-        )
+        language = state.language.lower()  # javascript / typescript
 
-    elif state.runtime == "Go":
-        main_file = base_path / "src" / "main.go"
-        main_file.write_text(
-            """package main
-            func main() {
-                fmt.Println("Kiro project running 🚀")
-            }"""
-        )
-        
-    print(f"\n📁 Created project: {project_name}")
+        return base / "node" / framework / language
+
+    if state.runtime == "Python":
+        framework = state.framework.lower()
+        return base / "python" / framework
+
+    if state.runtime == "Go":
+        framework = state.framework.lower()
+        return base / "go" / framework
+
+    return None

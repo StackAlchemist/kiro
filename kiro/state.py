@@ -6,4 +6,5 @@ class KiroState:
         self.framework = None
         self.database = None
         self.project_name = None
+        self.language = None #js or ts
     

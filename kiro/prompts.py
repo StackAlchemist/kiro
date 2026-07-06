@@ -1,5 +1,19 @@
 # Questionary prompts
 import questionary
+import typer
+
+def confirm_install_dependencies():
+    return typer.confirm(
+        "Install dependencies?",
+        default=True
+    )
+
+
+def confirm_git_init():
+    return typer.confirm(
+        "Initialize Git repository?",
+        default=True
+    )
 
 def select_runtime():
     return questionary.select(
@@ -26,4 +40,18 @@ def select_framework(runtime: str):
     ).ask()
 
 def ask_project_name():
-    return questionary.text("project name?").ask()
+    return questionary.text(
+        "project name?",
+        validate=lambda text: len(text.strip()) > 0 or "Project name cannot be empty"
+        ).ask()
+
+def ask_language():
+    return questionary.select(
+        "Choose language",
+        choices=[
+            "JavaScript",
+            "TypeScript"
+        ]
+    ).ask()
+
+    return choice
