@@ -55,3 +55,68 @@ def ask_language():
     ).ask()
 
     return choice
+
+def select_database():
+    return questionary.select(
+        "Select database",
+        choices=[
+            "PostgreSQL",
+            "MySQL",
+            "SQLite",
+            "MongoDB",
+            "None",
+        ]
+    ).ask()
+    return choice
+
+import questionary
+
+def select_orm(runtime, database):
+    choices = []
+
+    if runtime == "Node.js":
+        if database == "MongoDB":
+            choices = [
+                "Mongoose",
+                "None"
+            ]
+        elif database != "None":
+            choices = [
+                "Prisma",
+                "Drizzle",
+                "TypeORM",
+                "None"
+            ]
+        else:
+            return None
+
+    elif runtime == "Python":
+        if database == "MongoDB":
+            choices = [
+                "MongoEngine",
+                "Beanie",
+                "None"
+            ]
+        elif database != "None":
+            choices = [
+                "SQLAlchemy",
+                "Tortoise ORM",
+                "None"
+            ]
+        else:
+            return None
+
+    elif runtime == "Go":
+        if database != "None":
+            choices = [
+                "GORM",
+                "sqlx",
+                "None"
+            ]
+        else:
+            return None
+
+    return questionary.select(
+        "Choose ORM",
+        choices=choices
+    ).ask()
